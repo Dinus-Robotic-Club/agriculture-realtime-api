@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model RelayActifity {
+  id         String       @id @default(cuid())
+  status     ERelayStatus
+  created_at DateTime     @default(now())
+}
+
+model SensorActifity {
+  id          String      @id @default(cuid())
+  sensor_name  String
+  sensor_value Float
+  sensor_type  ESensorType
+  created_at  DateTime    @default(now())
+}
+
+enum ESensorType {
+  MOISTURE
+  TEMPERATURE
+  HUMIDITY
+}
+
+enum ERelayStatus {
+  ACTIVE
+  NON_ACTIVE
+}

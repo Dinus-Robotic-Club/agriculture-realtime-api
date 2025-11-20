@@ -1,0 +1,24 @@
+{
+  "data": [
+    {
+      "sensor_name": "DHT11",
+      "sensor_type": "HUMIDITY",
+      "sensor_value": 50
+    },
+    {
+      "sensor_name": "DHT11",
+      "sensor_type": "TEMPERATURE",
+      "sensor_value": 50
+    },
+    {
+      "sensor_name": "Soil Moisture Sensor 1",
+      "sensor_type": "MOISTURE",
+      "sensor_value": 50
+    },
+    {
+      "sensor_name": "Soil Moisture Sensor 2",
+      "sensor_type": "MOISTURE",
+      "sensor_value": 50
+    }
+  ]
+}
