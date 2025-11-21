@@ -24,6 +24,8 @@ const io = new Server(server, {
 app.use(
     cors({
         origin: '*',
+        methods: ['GET', 'POST'],
+        allowedHeaders: '*',
     }),
 )
 app.use(express.json())
