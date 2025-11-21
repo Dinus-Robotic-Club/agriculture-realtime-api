@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sensor Broadcast Listener</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Sensor Broadcast Listener</title>
+    </head>
+    <body>
+        <h2>Listening for sensor broadcasts...</h2>
 
-<h2>Listening for sensor broadcasts...</h2>
+        <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 
-<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+        <script>
+            const SOCKET_URL = 'http://localhost:4040'
+            const API_URL = 'http://localhost:4040/api/relay'
 
-<script>
-  const SOCKET_URL = "http://localhost:4040";
+            // Connect to socket.io server
+            const socket = io(SOCKET_URL)
 
-  // Connect to socket.io server
-  const socket = io(SOCKET_URL);
+            socket.on('connect', () => {
+                console.log('Connected to server:', socket.id)
+            })
 
-  socket.on("connect", () => {
-    console.log("Connected to server:", socket.id);
-  });
+            // Listen for broadcast from backend
+            socket.on('relay:new-data', (data) => {
+                console.log('📡 New sensor data received:', data)
+            })
 
-  // Listen for broadcast from backend
-  socket.on("sensor:new-data", (data) => {
-    console.log("📡 New sensor data received:", data);
-  });
-
-  socket.on("disconnect", () => {
-    console.log("Disconnected from socket server");
-  });
-</script>
-
-</body>
+            socket.on('disconnect', () => {
+                console.log('Disconnected from socket server')
+            })
+        </script>
+    </body>
 </html>

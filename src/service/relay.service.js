@@ -1,10 +1,9 @@
-import prisma from "../utils/lib/prisma.js";
+import { prisma } from '../utils/lib/prisma.js'
 
 export const createRelayData = async (data) => {
-  return await prisma.relayActifity.create({ data });
-};
+    return await prisma.relayActifity.create({ data })
+}
 
 export const getRelayData = async () => {
-  return await prisma.relayActifity.findMany();
-};
-
+    return await prisma.relayActifity.findMany()
+}

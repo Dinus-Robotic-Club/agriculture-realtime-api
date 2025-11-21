@@ -1,15 +1,9 @@
-import { Server } from "socket.io";
-
-let io = null;
-
-export function initSocket(server) {
-  io = new Server(server, {
-    cors: { origin: "*" }
-  });
-  return io;
-}
-
-export function getIO() {
-  if (!io) console.log("Socket is not initialized");
-  return io;
+export const broadcast = (wss, event, payload) => {
+    wss.clients.forEach((client) => {
+        if (client.readyState === client.OPEN) {
+            client.send(JSON.stringify({ event, payload }))
+            console.log(event)
+            console.log(payload)
+        }
+    })
 }

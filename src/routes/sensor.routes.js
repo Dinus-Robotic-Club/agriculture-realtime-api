@@ -1,12 +1,11 @@
-import { Router } from "express";
-import { createManySensorDataController, createSensorDataController, getSensorDatabyIDController, getSensorDataController, getSesnsorDatabyTypeController } from "../controller/sensor.controller.js";
+import express from 'express'
+import { createSensorDataController, createManySensorDataController } from '../controller/sensor.controller.js'
 
-const router = Router();
+export default (wss) => {
+    const router = express.Router()
 
-router.get("", getSensorDataController);
-router.get("/:id", getSensorDatabyIDController);
-router.get("/:type", getSesnsorDatabyTypeController);
-router.post("", createSensorDataController);
-router.post("/many", createManySensorDataController); 
+    router.post('', createSensorDataController(wss))
+    router.post('/many', createManySensorDataController(wss))
 
-export default router
+    return router
+}

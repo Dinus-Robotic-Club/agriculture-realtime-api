@@ -1,55 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Socket Test</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Socket Test</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                padding: 20px;
+            }
+            #sensorData {
+                margin-top: 20px;
+            }
+            .sensor-item {
+                border: 1px solid #ccc;
+                padding: 10px;
+                margin-bottom: 10px;
+                border-radius: 5px;
+                background-color: #f9f9f9;
+            }
+            label {
+                margin-right: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Realtime Sensor Data</h1>
 
-<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+        <div>
+            <label> <input type="radio" name="type" value="single" checked /> Single </label>
+            <label> <input type="radio" name="type" value="multiple" /> Multiple </label>
+            <button id="sendBtn">Send Data</button>
+        </div>
 
-<script>
-  const API_URL = "http://localhost:4040/api/sensor";
-  const SOCKET_URL = "http://localhost:4040";
+        <div id="sensorData"></div>
 
-  // 1️⃣ Connect socket first
-  const socket = io(SOCKET_URL);
+        <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+        <script>
+            const API_URL = 'http://localhost:4040/api/sensor'
+            const SOCKET_URL = 'http://localhost:4040'
 
-  socket.on("connect", () => {
-    console.log("Connected to socket:", socket.id);
-  });
+            const sensorDataContainer = document.getElementById('sensorData')
+            const sendBtn = document.getElementById('sendBtn')
 
-  // 2️⃣ Listen for broadcast from backend
-  socket.on("sensor:new-data", (data) => {
-    console.log("📡 Received sensor update:", data);
-  });
+            // 1️⃣ Connect socket
+            const socket = io(SOCKET_URL)
 
-  // 3️⃣ Send POST request
-  async function sendData() {
-    try {
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          sensor_name: "DHT11",
-          sensor_type: "TEMPERATURE",
-          sensor_value: 25,
-        }),
-      });
+            socket.on('connect', () => {
+                console.log('✅ Connected to socket:', socket.id)
+            })
 
-      const data = await response.json();
-      console.log("POST response:", data);
+            // 2️⃣ Listen for broadcast from backend
+            socket.on('sensor:new-data', (data) => {
+                console.log('📡 Received sensor update:', data)
 
-    } catch (error) {
-      console.error("POST Error:", error);
-    }
-  }
+                if (Array.isArray(data)) {
+                    data.map((item) => addSensorItem(item))
+                } else {
+                    addSensorItem(data)
+                }
+            })
 
-  sendData();
-</script>
+            function addSensorItem(item) {
+                console.log(item)
 
-</body>
+                const div = document.createElement('div')
+                div.className = 'sensor-item'
+                div.innerHTML = `
+        <strong>Sensor Name:</strong> ${item.sensor_name || item.sensorType || 'N/A'}<br>
+        <strong>Sensor Type:</strong> ${item.sensor_type || item.sensorType || 'N/A'}<br>
+        <strong>Value:</strong> ${item.sensor_value || item.value || 'N/A'}<br>
+        <strong>ID:</strong> ${item.id || 'N/A'}
+      `
+                sensorDataContainer.prepend(div) // terbaru di atas
+            }
+
+            // 4️⃣ Send POST request
+            async function sendData() {
+                const selectedType = document.querySelector('input[name="type"]:checked').value
+
+                let bodyData
+
+                if (selectedType === 'single') {
+                    bodyData = {
+                        sensor_name: 'DHT11',
+                        sensor_type: 'HUMIDITY',
+                        sensor_value: Math.floor(Math.random() * 100),
+                    }
+                } else {
+                    bodyData = [
+                        { sensor_name: 'DHT11', sensor_type: 'HUMIDITY', sensor_value: 50 },
+                        { sensor_name: 'DHT11', sensor_type: 'TEMPERATURE', sensor_value: 50 },
+                        { sensor_name: 'Soil Moisture Sensor 1', sensor_type: 'MOISTURE', sensor_value: 50 },
+                        { sensor_name: 'Soil Moisture Sensor 2', sensor_type: 'MOISTURE', sensor_value: 50 },
+                    ]
+                }
+
+                try {
+                    const response = await fetch(selectedType === 'single' ? API_URL : `${API_URL}/many`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(bodyData),
+                    })
+
+                    const data = await response.json()
+                    console.log('POST response:', data)
+                } catch (error) {
+                    console.error('POST Error:', error)
+                }
+            }
+
+            sendBtn.addEventListener('click', sendData)
+        </script>
+    </body>
 </html>

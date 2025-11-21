@@ -1,9 +1,11 @@
-import { Router } from "express";
-import { createRelayDataController, getRelayDataController } from "../controller/relay.controller.js";
+import { Router } from 'express'
+import { createRelayDataController, getRelayDataController } from '../controller/relay.controller.js'
 
-const router = Router();
+export default (wss) => {
+    const router = Router()
 
-router.post("/", createRelayDataController);
-router.get("/", getRelayDataController);
+    router.post('/', createRelayDataController(wss))
+    router.get('/', getRelayDataController(wss))
 
-export default router
+    return router
+}
