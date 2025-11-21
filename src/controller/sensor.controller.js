@@ -1,6 +1,5 @@
 import { createManySensorData, createSensorData, getSensorData, getSensorDatabyID, getSesnsorDatabyType } from '../service/sensor.service.js'
 import { errorResponse, successResponse } from '../utils/response.js'
-import { broadcast } from '../utils/lib/socket.js'
 
 export const getSensorDataController = async (req, res) => {
     try {

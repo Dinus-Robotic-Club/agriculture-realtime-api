@@ -18,4 +18,3 @@ export default (wss) => {
 
     return router
 }
-sensor
