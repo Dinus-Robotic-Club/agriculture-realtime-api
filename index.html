@@ -37,8 +37,8 @@
 
         <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
         <script>
-            const API_URL = 'http://localhost:4040/api/sensor'
-            const SOCKET_URL = 'http://localhost:4040'
+            const API_URL = 'https://agriculture-realtime-api-production.up.railway.app/api/sensor'
+            const SOCKET_URL = 'https://agriculture-realtime-api-production.up.railway.app'
 
             const sensorDataContainer = document.getElementById('sensorData')
             const sendBtn = document.getElementById('sendBtn')
@@ -89,10 +89,10 @@
                     }
                 } else {
                     bodyData = [
-                        { sensor_name: 'DHT11', sensor_type: 'HUMIDITY', sensor_value: 50 },
-                        { sensor_name: 'DHT11', sensor_type: 'TEMPERATURE', sensor_value: 50 },
-                        { sensor_name: 'Soil Moisture Sensor 1', sensor_type: 'MOISTURE', sensor_value: 50 },
-                        { sensor_name: 'Soil Moisture Sensor 2', sensor_type: 'MOISTURE', sensor_value: 50 },
+                        { sensor_name: 'DHT11', sensor_type: 'HUMIDITY', sensor_value: Math.floor(Math.random() * 100) },
+                        { sensor_name: 'DHT11', sensor_type: 'TEMPERATURE', sensor_value: Math.floor(Math.random() * 100) },
+                        { sensor_name: 'Soil Moisture Sensor 1', sensor_type: 'MOISTURE', sensor_value: Math.floor(Math.random() * 100) },
+                        { sensor_name: 'Soil Moisture Sensor 2', sensor_type: 'MOISTURE', sensor_value: Math.floor(Math.random() * 100) },
                     ]
                 }
 

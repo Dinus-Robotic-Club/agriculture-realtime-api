@@ -5,5 +5,9 @@ export const createRelayData = async (data) => {
 }
 
 export const getRelayData = async () => {
-    return await prisma.relayActifity.findMany()
+    return await prisma.relayActifity.findFirst({
+        orderBy: {
+            createdAt: 'desc',
+        },
+    })
 }
