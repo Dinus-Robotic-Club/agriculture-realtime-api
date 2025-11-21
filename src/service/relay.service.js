@@ -5,5 +5,5 @@ export const createRelayData = async (data) => {
 }
 
 export const getRelayData = async () => {
-    return await prisma.relayActifity.find()
+    return await prisma.relayActifity.findMany()
 }
